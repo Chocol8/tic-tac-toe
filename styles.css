@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "roboto", 'Courier New', Courier, monospace, 'system-ui';
+    font-size: calc(0.5vh + 1rem);
+}
+
+* html .container {
+    height: 100%;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+}
+
+.heading-text{
+    font-size: calc(0.5vh + 2rem);
+}
