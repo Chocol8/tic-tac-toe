@@ -135,12 +135,12 @@ function playGame(){
                 else{
                     gameBoard[row-1][col-1] = playerMark;
                     if(winCon() == 1){
-                        confirm("Play again?");
-                        if (confirm(text) == true) {
+                        if (confirm("Play again?") == true) {
                             playGame();
-                          } else {
+                        } 
+                        else{
                             return;
-                          }
+                        }
                         
                     }
                     else{
