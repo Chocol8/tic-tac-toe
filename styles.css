@@ -12,8 +12,27 @@
 .container{
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 1rem;
 }
 
 .heading-text{
     font-size: calc(0.5vh + 2rem);
+}
+
+.game-container{
+    display: grid;
+    grid-template: auto auto auto/ auto auto auto;
+    width: 50%;
+}
+
+.game-container > div{
+    display: grid;
+    grid-template: 100%, repeat(3,minmax(300px, 1fr));
+}
+
+.game-container > div > div{
+    border: 3px solid #e0115f;
+    height: 100px;
 }

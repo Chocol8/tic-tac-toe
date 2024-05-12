@@ -2,10 +2,17 @@ function gameBoard(){
     //Create Initial board
     const rows = columns = 3;
     const board = [];
+    const boardContainer = document.querySelector(".game-container")
     for(let rowVal = 0; rowVal < rows; rowVal++){
         board[rowVal] = [];
+        let createRow = document.createElement("div");
+        createRow.classList.add(`col-`+rowVal);
+        boardContainer.appendChild(createRow);
         for(let colVal = 0; colVal < columns; colVal++){
             board[rowVal].push(1);
+            let createTile = document.createElement("div");
+            createTile.classList.add(`tile-`+rowVal+`-`+colVal);
+            createRow.appendChild(createTile);
         }
     }
 
