@@ -35,4 +35,24 @@
 .game-container > div > div{
     border: 3px solid #e0115f;
     height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.turn-container{
+    display: flex;
+}
+
+.info-container{
+    width: 50%;
+    display: flex;
+}
+
+.player-container{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

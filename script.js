@@ -3,16 +3,17 @@ function gameBoard(){
     const rows = columns = 3;
     const board = [];
     const boardContainer = document.querySelector(".game-container")
-    for(let rowVal = 0; rowVal < rows; rowVal++){
-        board[rowVal] = [];
+    for(let colVal = 0; colVal < columns; colVal++){
+        board[colVal] = [];
         let createRow = document.createElement("div");
-        createRow.classList.add(`col-`+rowVal);
+        createRow.classList.add(`col-`+colVal);
         boardContainer.appendChild(createRow);
-        for(let colVal = 0; colVal < columns; colVal++){
-            board[rowVal].push(1);
+        for(let rowVal = 0; rowVal < rows; rowVal++){
+            board[colVal].push(1);
             let createTile = document.createElement("div");
-            createTile.classList.add(`tile-`+rowVal+`-`+colVal);
+            createTile.classList.add(`row-`+rowVal);
             createRow.appendChild(createTile);
+            createTile.textContent = "";
         }
     }
 
@@ -21,17 +22,31 @@ function gameBoard(){
 
 function playGame(){
     //Set player names
-    playerOne = "Player One";
-    playerTwo = "Player Two";
+    playerOne = "Player 1";
+    playerTwo = "Player 2";
+    const infoContainer = document.querySelector(".info-container");
 
     //Initialize tic tac toe board
     const board = gameBoard();
+    const tiles = document.querySelectorAll(".game-container > div > div");
 
     //Create players
     const players = [
         { name: playerOne, mark: `X` },
         { name: playerTwo, mark: `O` }
     ];
+
+    for(player in players){
+        let playerContainer = document.createElement("div");
+        infoContainer.appendChild(playerContainer);
+        playerContainer.classList.add(`player-container`);
+        let playerName = document.createElement("p");
+        let playerScore = document.createElement("p");
+        playerContainer.appendChild(playerName);
+        playerContainer.appendChild(playerScore);
+        playerName.textContent = players[player].name;
+        playerScore.textContent = `Score: 0`;
+    }
 
     //get currentPlayer
     let currentPlayer = players[0];
@@ -129,44 +144,42 @@ function playGame(){
         }
     };
 
-    const playerTurn = function(playerName, playerMark, gameBoard){
-        console.log(playerName + `'s turn`);
-        let row = prompt("Input row number from 1 - 3: ");
-        if(row >= 1 && row <= 3){
-            let col = prompt("Input col number from 1 - 3: ");
-            if(col >= 1 && col <= 3){
-                if(gameBoard[row-1][col-1] == players[0].mark || gameBoard[row-1][col-1] == players[1].mark){
-                    alert("Grid already has a  mark.");
-                    playerTurn(playerName, playerMark, gameBoard);
-                }
-                else{
-                    gameBoard[row-1][col-1] = playerMark;
-                    if(winCon() == 1){
-                        if (confirm("Play again?") == true) {
-                            playGame();
-                        } 
-                        else{
-                            return;
-                        }
-                        
-                    }
-                    else{
-                        const newPlayer = switchPlayer();
-                        console.log(gameBoard);
-                        playerTurn(newPlayer.name, newPlayer.mark, gameBoard);
-                    }
-                }
-            }
+    const playerTurn = function(playerName, playerMark, gameBoard, arr){
+        gameBoard[arr[0]][arr[1]] = playerMark;
+        if(winCon() == 1){
+            if (confirm(`${playerName} wins! Play again?`) == true) {
+                playGame();
+            } 
             else{
-                alert("Wrong col value");
-            }   
+                return;
+            }
+            
         }
         else{
-            alert("Wrong row value");
+            switchPlayer();
         }
     };
 
-    playerTurn(currentPlayer.name, currentPlayer.mark, board);
+    tiles.forEach((tile) => {
+        tile.addEventListener("click", function(){
+            const getValue = function(string){
+                const numbers = `0123`;
+                const cleanedString = string.split('').filter((character) => numbers.includes(character)).join('');
+                return cleanedString;
+            }
+            let rowValue = getValue(this.className);
+            let colValue = getValue(this.parentElement.className);
+            let checkArr = [rowValue,colValue];
+
+            if(board[checkArr[0]][checkArr[1]] == players[0].mark || board[checkArr[0]][checkArr[1]] == players[1].mark){
+                alert("Grid already has a  mark.");
+            }
+            else{
+                this.textContent = currentPlayer.mark;
+                playerTurn(currentPlayer.name, currentPlayer.mark, board, checkArr);
+            }
+        });
+    });
 }
 
 playGame();
