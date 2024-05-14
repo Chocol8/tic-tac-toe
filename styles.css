@@ -1,3 +1,7 @@
+:root{
+    --ruby: #e0115f;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -34,7 +38,7 @@
 }
 
 .game-container > div > div{
-    border: 3px solid #e0115f;
+    border: 3px solid var(--ruby);
     height: 100px;
     display: flex;
     justify-content: center;
@@ -59,4 +63,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    row-gap: 10px;
+}
+
+.set-name{
+    border-radius: 25px;
+    padding: 0.5rem;
+    background-color: var(--ruby);
+    color: white;
 }

@@ -21,17 +21,14 @@ function gameBoard(){
 }
 
 function playGame(){
-    //Set player names
     playerOne = "Player 3";
     playerTwo = "Player 4";
     const infoContainer = document.querySelector(".info-container");
     const turn = document.querySelector(".turn-container > p")
 
-    //Initialize tic tac toe board
     const board = gameBoard();
     const tiles = document.querySelectorAll(".game-container > div > div");
 
-    //Create players
     const players = [
         { name: playerOne, mark: `X` },
         { name: playerTwo, mark: `O` }
@@ -42,24 +39,21 @@ function playGame(){
         infoContainer.appendChild(playerContainer);
         playerContainer.classList.add(`player-container`);
         let playerName = document.createElement("p");
+        let setName = document.createElement("button");
         playerContainer.appendChild(playerName);
+        playerName.classList.add("player-name")
+        setName.classList.add("set-name");
         playerName.textContent = `player ${player}: ${players[player-1].name}`;
+        playerContainer.appendChild(setName);
+        setName.textContent = `set ${players[player-1].name}'s name`;
     }
 
-    //get currentPlayer
     let currentPlayer = players[0];
 
-     //enter player turn
     turn.textContent = `${currentPlayer.name}'s turn`;
 
     const switchPlayer = function(){
-        if(currentPlayer === players[0]){
-            currentPlayer = players[1];
-        }
-        else{
-            currentPlayer = players[0];
-        }
-        return currentPlayer;
+        return currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
     };
 
     const valueCompare = (valComp) => valComp == currentPlayer.mark;
@@ -222,6 +216,19 @@ function playGame(){
             }
         });
     });
+
+    const nameButton = document.querySelectorAll(".set-name");
+    let nameList = [...nameButton];
+    const playerNames = document.querySelectorAll(".player-name");
+    let playerList = [...playerNames];
+    for(let val = 0; val < nameList.length;val++){
+        nameList[val].addEventListener("click",function(){
+            let playerName = prompt("Enter name: ");
+            players[val].name = playerName;
+            playerList[val].textContent = `player ${val+1}: ${playerName}`;
+            nameList[val].textContent = `set ${players[val].name}'s name`;
+        });
+    }
 }
 
 playGame();
