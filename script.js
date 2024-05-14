@@ -21,8 +21,8 @@ function gameBoard(){
 }
 
 function playGame(){
-    playerOne = "Player 3";
-    playerTwo = "Player 4";
+    playerOne = "Player 1";
+    playerTwo = "Player 2";
     const infoContainer = document.querySelector(".info-container");
     const turn = document.querySelector(".turn-container > p")
 
@@ -227,8 +227,31 @@ function playGame(){
             players[val].name = playerName;
             playerList[val].textContent = `player ${val+1}: ${playerName}`;
             nameList[val].textContent = `set ${players[val].name}'s name`;
+            turn.textContent = `${playerName}'s turn`;
         });
     }
+    return {reset};
 }
 
-playGame();
+const startButton = document.createElement("button");
+const resetButton = document.createElement("button");
+const controlContainer = document.querySelector(".control-container");
+controlContainer.appendChild(startButton);
+controlContainer.appendChild(resetButton);
+startButton.textContent = `Start`;
+resetButton.textContent = `Restart`;
+resetButton.disabled = true;
+
+startButton.addEventListener("click",function(){
+    const game = playGame();
+    resetButton.disabled = false;
+    startButton.disabled = true;
+    resetButton.addEventListener("click",function(){
+        if(confirm("Are you sure you want to restart?") == true){
+            game.reset();
+        }
+        else{
+            return;
+        }
+    });
+});
