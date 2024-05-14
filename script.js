@@ -22,9 +22,10 @@ function gameBoard(){
 
 function playGame(){
     //Set player names
-    playerOne = "Player 1";
-    playerTwo = "Player 2";
+    playerOne = "Player 3";
+    playerTwo = "Player 4";
     const infoContainer = document.querySelector(".info-container");
+    const turn = document.querySelector(".turn-container > p")
 
     //Initialize tic tac toe board
     const board = gameBoard();
@@ -36,20 +37,20 @@ function playGame(){
         { name: playerTwo, mark: `O` }
     ];
 
-    for(player in players){
+    for(let player = 1; player <= 2; player++){
         let playerContainer = document.createElement("div");
         infoContainer.appendChild(playerContainer);
         playerContainer.classList.add(`player-container`);
         let playerName = document.createElement("p");
-        let playerScore = document.createElement("p");
         playerContainer.appendChild(playerName);
-        playerContainer.appendChild(playerScore);
-        playerName.textContent = players[player].name;
-        playerScore.textContent = `Score: 0`;
+        playerName.textContent = `player ${player}: ${players[player-1].name}`;
     }
 
     //get currentPlayer
     let currentPlayer = players[0];
+
+     //enter player turn
+    turn.textContent = `${currentPlayer.name}'s turn`;
 
     const switchPlayer = function(){
         if(currentPlayer === players[0]){
@@ -115,7 +116,6 @@ function playGame(){
                         continue;
                     }
                 }
-                continue;
             }
             else{
                 break;
@@ -123,9 +123,11 @@ function playGame(){
         }
 
         //reverse diagonal
-        for(let rowVal = 2; rowVal > -1; rowVal--){
-            if(board[rowVal][rowVal] == currentPlayer.mark){
-                checkArr.push(board[rowVal][rowVal]);
+        let colVal = 2;
+        checkArr = [];
+        for(let rowVal = 0; rowVal < rows; rowVal++){
+            if(board[rowVal][colVal] == currentPlayer.mark){
+                checkArr.push(board[rowVal][colVal]);
                 if(checkArr.length == 3){
                     if(checkArr.every(valueCompare) == true){
                         console.log(currentPlayer.name + ` wins!`);
@@ -136,19 +138,48 @@ function playGame(){
                         continue;
                     }
                 }
-                continue;
             }
             else{
                 break;
             }
+            colVal--;
         }
+    };
+
+    const fullBoard = () => {
+        let checkArr = [];
+        for(let rowVal = 0; rowVal < 3; rowVal++){
+            for(let colVal = 0; colVal < 3; colVal++){
+                checkArr.push(board[rowVal][colVal]);
+            }
+        }
+    
+        const result = checkArr.filter((marks) => marks != players[0].mark).filter((marks) => marks != players[1].mark);
+
+        if(result.length == 0){
+            return 1;
+        }
+    };
+
+    const reset = () => {
+        tiles.forEach((tile) => {
+            tile.textContent = "";
+            
+        });
+        for(let colVal = 0; colVal < 3; colVal++){
+            for(let rowVal = 0; rowVal < 3; rowVal++){
+                board[rowVal][colVal] = 1;
+            }
+        }
+        currentPlayer = players[0];
+        turn.textContent = `${currentPlayer.name}'s turn`;
     };
 
     const playerTurn = function(playerName, playerMark, gameBoard, arr){
         gameBoard[arr[0]][arr[1]] = playerMark;
         if(winCon() == 1){
             if (confirm(`${playerName} wins! Play again?`) == true) {
-                playGame();
+                reset();
             } 
             else{
                 return;
@@ -156,7 +187,18 @@ function playGame(){
             
         }
         else{
-            switchPlayer();
+            if(fullBoard() == 1){
+                if (confirm(`It's a draw! Play again?`) == true) {
+                    reset();
+                } 
+                else{
+                    return;
+                }
+            }
+            else{
+                switchPlayer();
+                turn.textContent = `${currentPlayer.name}'s turn`;
+            }
         }
     };
 
